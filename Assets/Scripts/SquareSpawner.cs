@@ -4,6 +4,26 @@ using UnityEngine;
 
 public class SquareSpawner : MonoBehaviour
 {
+    private static SquareSpawner _instance = null;
+
+    public static SquareSpawner Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<SquareSpawner>();
+
+                if (_instance == null)
+                {
+                    Debug.LogError("Fatal Error: SquareSpawner not Found");
+                }
+            }
+
+            return _instance;
+        }
+    }
+
     [SerializeField]
     private GameObject squarePrefab;
 
@@ -16,37 +36,51 @@ public class SquareSpawner : MonoBehaviour
 
     private List<GameObject> squaresPool = new List<GameObject>();
 
-    private void Start() {
+    private void Start()
+    {
         spawnArea = GetComponent<SpriteRenderer>().bounds;
 
         int spawnCount = Random.Range(minSquares, maxSquares);
 
-        for (int i = 0; i < spawnCount; i++) {
+        for (int i = 0; i < spawnCount; i++)
+        {
             Vector2 spawnPosition = GetRandomPosition();
             SpawnSquare(spawnPosition);
         }
     }
 
-    private Vector2 GetRandomPosition() {
+    private Vector2 GetRandomPosition()
+    {
         float x = Random.Range(spawnArea.min.x, spawnArea.max.x);
         float y = Random.Range(spawnArea.min.y, spawnArea.max.y);
 
         return new Vector2(x, y);
     }
 
-    private GameObject getFromPool() {
-        if (squaresPool.Count == 0) {
+    private GameObject getFromPool()
+    {
+        if (squaresPool.Count == 0)
+        {
             return Instantiate(squarePrefab);
-        } else {
+        }
+        else
+        {
             GameObject square = squaresPool[0];
             squaresPool.RemoveAt(0);
             return square;
         }
     }
 
-    private void SpawnSquare(Vector2 position) {
+    private void SpawnSquare(Vector2 position)
+    {
         GameObject square = getFromPool();
         square.transform.position = position;
         square.SetActive(true);
+    }
+
+    public void DestroySquare(GameObject square)
+    {
+        square.SetActive(false);
+        squaresPool.Add(square);
     }
 }
