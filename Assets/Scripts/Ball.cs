@@ -9,7 +9,7 @@ public class Ball : MonoBehaviour
     private Rigidbody2D rigidbody2d;
 
     [SerializeField]
-    private float speed = 5;
+    private float speed = 5f;
 
     private Vector2 direction;
 
@@ -18,25 +18,33 @@ public class Ball : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         MoveBall();
     }
 
     void MoveBall()
     {
-        float xMoveDir = Input.GetAxisRaw("Horizontal");
-        float yMoveDir = Input.GetAxisRaw("Vertical");
-        direction = new Vector2(xMoveDir, yMoveDir);
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 curPos = transform.position;
+
+        if(Vector2.Distance(mousePos, curPos) > 0.1f)
+        {
+            direction = (mousePos - curPos).normalized;
+        }
+        else
+        {
+            direction = Vector2.zero;
+        }
 
         rigidbody2d.velocity = direction * speed;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "wall")
-        {
-            direction = Vector2.Reflect(direction, other.contacts[0].normal);
-        }
+        // if (other.gameObject.tag == "wall")
+        // {
+        //     direction = Vector2.Reflect(direction, other.contacts[0].normal);
+        // }
     }
 }
