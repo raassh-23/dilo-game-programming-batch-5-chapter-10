@@ -16,8 +16,6 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
-
-        direction = Random.insideUnitCircle.normalized;
     }
 
     private void Update()
@@ -27,6 +25,10 @@ public class Ball : MonoBehaviour
 
     void MoveBall()
     {
+        float xMoveDir = Input.GetAxisRaw("Horizontal");
+        float yMoveDir = Input.GetAxisRaw("Vertical");
+        direction = new Vector2(xMoveDir, yMoveDir);
+
         rigidbody2d.velocity = direction * speed;
     }
 
