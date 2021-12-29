@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random=UnityEngine.Random;
+using Random = UnityEngine.Random;
 
 public class Ball : MonoBehaviour
 {
@@ -20,12 +20,21 @@ public class Ball : MonoBehaviour
         direction = Random.insideUnitCircle.normalized;
     }
 
-    private void Update() {
+    private void Update()
+    {
         MoveBall();
     }
 
     void MoveBall()
     {
         rigidbody2d.velocity = direction * speed;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "wall")
+        {
+            direction = Vector2.Reflect(direction, other.contacts[0].normal);
+        }
     }
 }
