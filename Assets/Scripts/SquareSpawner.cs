@@ -29,8 +29,18 @@ public class SquareSpawner : MonoBehaviour
 
     [SerializeField]
     private int minSquares = 5;
+
     [SerializeField]
     private int maxSquares = 10;
+
+    [SerializeField]
+    private float respawnDelay = 3f;
+
+    [SerializeField]
+    private Transform ball;
+
+    [SerializeField]
+    private float minDistToBall = 0.3f;
 
     private Bounds spawnArea;
 
@@ -44,8 +54,7 @@ public class SquareSpawner : MonoBehaviour
 
         for (int i = 0; i < spawnCount; i++)
         {
-            Vector2 spawnPosition = GetRandomPosition();
-            SpawnSquare(spawnPosition);
+            SpawnSquareAtRandomPosition();
         }
     }
 
@@ -78,9 +87,22 @@ public class SquareSpawner : MonoBehaviour
         square.SetActive(true);
     }
 
+    private void SpawnSquareAtRandomPosition()
+    {
+        Vector2 spawnPosition;
+
+        do
+        {
+            spawnPosition = GetRandomPosition();
+        } while (Vector2.Distance(ball.position, spawnPosition) < minDistToBall);
+
+        SpawnSquare(spawnPosition);
+    }
+
     public void DestroySquare(GameObject square)
     {
         square.SetActive(false);
         squaresPool.Add(square);
+        Invoke("SpawnSquareAtRandomPosition", respawnDelay);
     }
 }
