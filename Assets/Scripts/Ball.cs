@@ -48,4 +48,9 @@ public class Ball : MonoBehaviour
             other.gameObject.GetComponent<Square>().Destroy();
         }
     }
+
+    public void ChangeSpeedByPercent(float percentage)
+    {
+        speed += speed * percentage;
+    }
 }

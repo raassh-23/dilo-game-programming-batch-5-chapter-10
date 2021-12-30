@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -44,7 +45,102 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start() {
+    [SerializeField]
+    private float gameTime;
+    [SerializeField]
+    private Text TimeText;
+
+    private float _timer;
+
+    public float Timer
+    {
+        get
+        {
+            return _timer;
+        }
+
+        set
+        {
+            _timer = value;
+            TimeText.text = _timer.ToString("0");
+        }
+    }
+
+    [SerializeField]
+    private GameObject ballGameObject;
+
+    public Ball Ball {
+        get
+        {
+            return ballGameObject.GetComponent<Ball>();
+        }
+    }
+
+    [SerializeField]
+    private Text FinalScoreText;
+
+    [SerializeField]
+    private Text HighScoreText;
+
+    [SerializeField]
+    private GameObject InGamePanel;
+
+    [SerializeField]
+    private GameObject GameOverPanel;
+
+    [SerializeField]
+    private Text PowerUpText;
+
+    public bool IsGameOver { get; set; }
+
+    private void Start()
+    {
         Score = 0;
+        Timer = gameTime;
+        IsGameOver = false;
+    }
+
+    private void Update()
+    {
+        if (IsGameOver)
+        {
+            return;
+        }
+
+        Timer -= Time.deltaTime;
+        if (Timer <= 0)
+        {
+            GameOver();
+        }
+    }
+
+    private void GameOver()
+    {
+        IsGameOver = true;
+
+        int highScore = PlayerPrefs.GetInt("HighScore", 0);
+        if (Score > highScore)
+        {
+            highScore = Score;
+            PlayerPrefs.SetInt("HighScore", highScore);
+        }
+
+        ballGameObject.SetActive(false);
+        GameOverPanel.SetActive(true);
+        InGamePanel.SetActive(false);
+
+        FinalScoreText.text = "Your Score: " + Score;
+        HighScoreText.text = "High Score: " + highScore;
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void SetPowerUpText(string text)
+    {
+        PowerUpText.text = text;
+        PowerUpText.color = Color.white;
+        PowerUpText.CrossFadeAlpha(0, 1f, false);
     }
 }

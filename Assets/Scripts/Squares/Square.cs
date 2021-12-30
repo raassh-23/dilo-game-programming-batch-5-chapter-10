@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Square : MonoBehaviour
 {
-    public void Activate(Vector2 position)
+    public virtual void Activate(Vector2 position)
     {
         transform.position = position;
         gameObject.SetActive(true);
     }
 
-    public void Destroy() {
-        GameManager.Instance.Score++;
-
+    public virtual void Destroy() {
         gameObject.SetActive(false);
         SquareSpawner.Instance.ReturnToPool(this);
     }
