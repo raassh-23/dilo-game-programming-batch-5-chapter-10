@@ -12,26 +12,7 @@ public class Ball : MonoBehaviour
     [SerializeField]
     private float speed = 5f;
 
-    [SerializeField]
-    private Text ScoreText;
-
     private Vector2 direction;
-
-    private int _score = 0;
-
-    public int Score
-    {
-        get
-        {
-            return _score;
-        }
-
-        private set
-        {
-            _score = value;
-            ScoreText.text = "Score: " + _score;
-        }
-    }
 
     private void Start()
     {
@@ -62,10 +43,9 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "square")
+        if (other.gameObject.CompareTag("square"))
         {
-            Score++;
-            SquareSpawner.Instance.DestroySquare(other.gameObject);
+            other.gameObject.GetComponent<Square>().Destroy();
         }
     }
 }

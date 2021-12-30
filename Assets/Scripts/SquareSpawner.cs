@@ -44,7 +44,7 @@ public class SquareSpawner : MonoBehaviour
 
     private Bounds spawnArea;
 
-    private List<GameObject> squaresPool = new List<GameObject>();
+    private List<Square> squaresPool = new List<Square>();
 
     private void Start()
     {
@@ -66,25 +66,28 @@ public class SquareSpawner : MonoBehaviour
         return new Vector2(x, y);
     }
 
-    private GameObject getFromPool()
+    private Square getFromPool()
     {
+        Square square;
+
         if (squaresPool.Count == 0)
         {
-            return Instantiate(squarePrefab);
+            GameObject newSquare = Instantiate(squarePrefab);
+            square = newSquare.GetComponent<Square>();
         }
         else
         {
-            GameObject square = squaresPool[0];
+            square = squaresPool[0];
             squaresPool.RemoveAt(0);
-            return square;
         }
+
+        return square;
     }
 
     private void SpawnSquare(Vector2 position)
     {
-        GameObject square = getFromPool();
-        square.transform.position = position;
-        square.SetActive(true);
+        Square square = getFromPool();
+        square.Activate(position);
     }
 
     private void SpawnSquareAtRandomPosition()
@@ -99,9 +102,8 @@ public class SquareSpawner : MonoBehaviour
         SpawnSquare(spawnPosition);
     }
 
-    public void DestroySquare(GameObject square)
+    public void ReturnToPool(Square square)
     {
-        square.SetActive(false);
         squaresPool.Add(square);
         Invoke("SpawnSquareAtRandomPosition", respawnDelay);
     }
