@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebbe9c89dfb2bc745a18876f0137e0f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionSfx: {fileID: 8300000, guid: 7216c597f243aa34598c44dc428aeb13, type: 3}
   minShowDuration: 10
   maxShowDuration: 15
 --- !u!1001 &6785759845914392984

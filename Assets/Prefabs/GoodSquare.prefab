@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c671419a377d83f41ab43336b941bee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionSfx: {fileID: 8300000, guid: 86cc00ddfd4b64d4e8a75903af1b6300, type: 3}
 --- !u!1001 &3036107616633580332
 PrefabInstance:
   m_ObjectHideFlags: 0

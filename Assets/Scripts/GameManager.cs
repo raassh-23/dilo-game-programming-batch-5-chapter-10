@@ -69,7 +69,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject ballGameObject;
 
-    public Ball Ball {
+    public Ball Ball
+    {
         get
         {
             return ballGameObject.GetComponent<Ball>();
@@ -91,13 +92,20 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Text PowerUpText;
 
+    [SerializeField]
+    private AudioClip GameOverSfx;
+
     public bool IsGameOver { get; set; }
+
+    private AudioSource audioSource;
 
     private void Start()
     {
         Score = 0;
         Timer = gameTime;
         IsGameOver = false;
+        PowerUpText.canvasRenderer.SetAlpha(0);
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -117,6 +125,7 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         IsGameOver = true;
+        PlayAudio(GameOverSfx);
 
         int highScore = PlayerPrefs.GetInt("HighScore", 0);
         if (Score > highScore)
@@ -137,10 +146,16 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
     public void SetPowerUpText(string text)
     {
         PowerUpText.text = text;
-        PowerUpText.color = Color.white;
+        PowerUpText.canvasRenderer.SetAlpha(1);
         PowerUpText.CrossFadeAlpha(0, 1f, false);
+    }
+
+    public void PlayAudio(AudioClip audioClip)
+    {
+        audioSource.PlayOneShot(audioClip);
     }
 }

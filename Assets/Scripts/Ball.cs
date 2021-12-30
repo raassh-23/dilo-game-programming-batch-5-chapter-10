@@ -45,7 +45,9 @@ public class Ball : MonoBehaviour
     {
         if (other.gameObject.CompareTag("square"))
         {
-            other.gameObject.GetComponent<Square>().Destroy();
+            Square square = other.gameObject.GetComponent<Square>();
+            square.PlayAudio();
+            square.Destroy();
         }
     }
 
