@@ -147,6 +147,11 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
     public void SetPowerUpText(string text)
     {
         PowerUpText.text = text;
